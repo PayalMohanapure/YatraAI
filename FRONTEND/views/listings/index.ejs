@@ -1,0 +1,79 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="hero">
+  <h1>Discover India's <span>Finest Hotels</span></h1>
+  <p>80+ curated stays across India's vibrant destinations. Verified by locals, planned by AI.</p>
+  <div class="hero-stats" style="margin-bottom: 2rem;">
+    <div class="hero-stat"><div class="stat-value">80+</div><div class="stat-label">Real Hotels</div></div>
+    <div class="hero-stat"><div class="stat-value">10</div><div class="stat-label">Destinations</div></div>
+    <div class="hero-stat"><div class="stat-value">AI</div><div class="stat-label">Powered Chat</div></div>
+  </div>
+
+  <form action="/listings" method="GET" style="display: flex; flex-wrap: wrap; max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 50px; padding: 0.5rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border);">
+    <div style="flex: 2; display: flex; align-items: center; padding-left: 1.5rem; border-right: 1px solid var(--border);">
+        <i class="fa-solid fa-location-dot" style="color: var(--accent); margin-right: 0.8rem;"></i>
+        <input type="text" name="city" placeholder="City or Destination" style="width: 100%; border: none; background: transparent; outline: none; font-size: 0.95rem; color: var(--text-primary); padding: 0.5rem 0;" value="<%= typeof query !== 'undefined' && query.city && query.city !== 'all' ? query.city : '' %>">
+    </div>
+    <div style="flex: 2; display: flex; align-items: center; padding-left: 1.5rem; border-right: 1px solid var(--border);">
+        <i class="fa-solid fa-magnifying-glass" style="color: var(--accent); margin-right: 0.8rem;"></i>
+        <input type="text" name="search" placeholder="Hotel Name" style="width: 100%; border: none; background: transparent; outline: none; font-size: 0.95rem; color: var(--text-primary); padding: 0.5rem 0;" value="<%= typeof query !== 'undefined' && query.search ? query.search : '' %>">
+    </div>
+    <div style="flex: 1; display: flex; align-items: center; padding-left: 1.5rem; border-right: 1px solid var(--border);">
+        <i class="fa-solid fa-indian-rupee-sign" style="color: var(--accent); margin-right: 0.8rem;"></i>
+        <input type="number" name="minPrice" placeholder="Min ₹" style="width: 100%; border: none; background: transparent; outline: none; font-size: 0.95rem; color: var(--text-primary); padding: 0.5rem 0;" value="<%= typeof query !== 'undefined' && query.minPrice ? query.minPrice : '' %>">
+    </div>
+    <div style="flex: 1; display: flex; align-items: center; padding-left: 1.5rem; border-right: 1px solid var(--border);">
+        <i class="fa-solid fa-indian-rupee-sign" style="color: var(--accent); margin-right: 0.8rem;"></i>
+        <input type="number" name="maxPrice" placeholder="Max ₹" style="width: 100%; border: none; background: transparent; outline: none; font-size: 0.95rem; color: var(--text-primary); padding: 0.5rem 0;" value="<%= typeof query !== 'undefined' && query.maxPrice ? query.maxPrice : '' %>">
+    </div>
+    <div style="flex: 1.5; display: flex; align-items: center; padding-left: 1.5rem;">
+        <i class="fa-solid fa-filter" style="color: var(--accent); margin-right: 0.8rem;"></i>
+        <select name="sort" style="width: 100%; border: none; background: transparent; outline: none; font-size: 0.95rem; color: var(--text-secondary); padding: 0.5rem 0; cursor: pointer;">
+            <option value="default" <%= typeof query !== 'undefined' && query.sort === 'default' ? 'selected' : '' %>>Sort By</option>
+            <option value="price_low" <%= typeof query !== 'undefined' && query.sort === 'price_low' ? 'selected' : '' %>>Price: Low</option>
+            <option value="price_high" <%= typeof query !== 'undefined' && query.sort === 'price_high' ? 'selected' : '' %>>Price: High</option>
+            <option value="rating" <%= typeof query !== 'undefined' && query.sort === 'rating' ? 'selected' : '' %>>Top Rated</option>
+        </select>
+    </div>
+    <button type="submit" style="background: var(--accent); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; margin-left: 0.5rem;">Search</button>
+  </form>
+</section>
+
+
+
+<!-- ─── Results ─── -->
+<section class="listings-header">
+  <h2>All Hotels</h2>
+  <p><%= listings.length %> properties found</p>
+</section>
+
+<div class="listings-grid">
+  <% for(let listing of listings) { %>
+  <div class="listing-card">
+    <a href="/listings/<%= listing._id %>">
+      <div class="card-img-wrap">
+        <img
+          src="<%= listing.image.url %>"
+          alt="<%= listing.title %>"
+          onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'"
+        />
+        <div class="card-badge">
+          <% for(let i = 0; i < listing.starRating; i++) { %><i class="fa-solid fa-star"></i><% } %>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3><%= listing.title %></h3>
+        <p class="card-location"><i class="fa-solid fa-location-dot"></i> <%= listing.location %>, <%= listing.country %></p>
+        <div class="card-footer">
+          <div class="card-rating">
+            <i class="fa-solid fa-star"></i>
+            <span><%= listing.rating %></span>
+            <span>(<%= listing.reviewCount %> reviews)</span>
+          </div>
+          <div class="card-price">₹<%= listing.price.toLocaleString("en-IN") %> <span>/night</span></div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <% } %>
+</div>

@@ -1,0 +1,59 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="form-container" style="max-width: 800px; margin: 4rem auto; padding: 0 1rem;">
+    <div class="profile-header" style="text-align: center; margin-bottom: 2rem;">
+        <div class="profile-image-container" style="margin-bottom: 1rem;">
+            <% if(user.profileImage && user.profileImage.url) { %>
+                <img src="<%= user.profileImage.url %>" alt="<%= user.username %>" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); box-shadow: var(--shadow-md);">
+            <% } else { %>
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; margin: 0 auto; box-shadow: var(--shadow-md);">
+                    <%= user.username.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+        </div>
+        <h1 style="color: var(--text-primary); margin-bottom: 0.2rem;">Hello, <%= user.firstName ? user.firstName : user.username %>!</h1>
+        <p style="color: var(--text-secondary);"><i class="fa-solid fa-envelope"></i> <%= user.email %></p>
+    </div>
+
+    <div class="form-card" style="background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;"><i class="fa-solid fa-user-pen" style="color: var(--accent);"></i> Update Profile</h2>
+        
+        <form action="/profile?_method=PUT" method="POST" enctype="multipart/form-data" class="listing-form">
+            <div class="form-row" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">First Name</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= user.firstName || '' %>" placeholder="e.g. Rahul" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-card2); color: var(--text-primary);">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="lastName" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= user.lastName || '' %>" placeholder="e.g. Sharma" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-card2); color: var(--text-primary);">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label for="profileImage" style="display: block; margin-bottom: 0.5rem; font-weight: 500;"><i class="fa-solid fa-camera"></i> Profile Picture</label>
+                <input type="file" id="profileImage" name="profileImage" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-card2); color: var(--text-primary);">
+            </div>
+            
+            <button class="btn-submit" type="submit" style="width: 100%; padding: 1rem; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: opacity 0.2s;"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        </form>
+    </div>
+
+    <!-- AI Chat History Section -->
+    <div class="form-card" style="background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;"><i class="fa-solid fa-robot" style="color: var(--accent);"></i> Recent AI Chat History</h2>
+        
+        <% if(user.chatHistory && user.chatHistory.length > 0) { %>
+            <div class="chat-history-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                <% for(let msg of user.chatHistory) { %>
+                    <div style="background: <%= msg.role === 'user' ? 'var(--bg-card2)' : 'rgba(108, 92, 231, 0.1)' %>; padding: 1rem; border-radius: 8px; border-left: 4px solid <%= msg.role === 'user' ? '#95a5a6' : 'var(--accent)' %>;">
+                        <strong><%= msg.role === 'user' ? 'You' : 'YatraAI' %>:</strong>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary); white-space: pre-wrap;"><%= msg.content.substring(0, 150) %><%= msg.content.length > 150 ? '...' : '' %></p>
+                    </div>
+                <% } %>
+            </div>
+        <% } else { %>
+            <p style="color: var(--text-secondary); text-align: center; padding: 2rem 0;">You haven't chatted with our AI yet. Visit a hotel page to start planning your trip!</p>
+        <% } %>
+    </div>
+</div>

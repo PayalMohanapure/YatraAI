@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YatraAI — Discover India's Finest Hotels</title>
+  <meta name="description" content="AI-powered travel planner for premium Indian hotel stays with real-time maps and smart booking."/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/listings" class="nav-brand">
+      <i class="fa-solid fa-paper-plane"></i> YatraAI
+    </a>
+    <div class="nav-links">
+      <a href="/listings"><i class="fa-solid fa-compass"></i> Explore</a>
+      <a href="/listings/new" class="btn-add"><i class="fa-solid fa-plus"></i> Add Hotel</a>
+      <% if (!locals.currentUser) { %>
+          <a href="/login" style="margin-left: 1rem;"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+          <a href="/signup" class="btn-add"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+      <% } else { %>
+          <a href="/profile" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <% if(locals.currentUser.profileImage && locals.currentUser.profileImage.url) { %>
+                <img src="<%= locals.currentUser.profileImage.url %>" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+            <% } else { %>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">
+                    <%= locals.currentUser.username.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <span>Profile</span>
+          </a>
+          <a href="/logout" style="margin-left: 1rem; color: #ff4757;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <!-- Flash Messages / Toasts -->
+  <% if(locals.success && locals.success.length) { %>
+    <div class="flash-toast flash-success">
+      <i class="fa-solid fa-circle-check"></i> <%= locals.success %>
+    </div>
+  <% } %>
+  <% if(locals.error && locals.error.length) { %>
+    <div class="flash-toast flash-error">
+      <i class="fa-solid fa-circle-exclamation"></i> <%= locals.error %>
+    </div>
+  <% } %>
+
+  <main class="main-content">
+    <%- body %>
+  </main>
+
+  <!-- ─── Global AI Chat Widget ─── -->
+  <div class="chat-widget" id="chatBox">
+    <button class="chat-toggle" onclick="toggleChat()" id="chatToggleBtn">
+      <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <div class="chat-window">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <i class="fa-solid fa-robot"></i>
+          <div>
+            <strong>YatraAI Concierge</strong>
+            <span class="chat-status">● Online</span>
+          </div>
+        </div>
+        <button onclick="toggleChat()" class="chat-close">✕</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble chat-assistant">
+          👋 Hi! I'm your AI travel concierge. Ask me about:
+          <br>📅 Trip itineraries & budget
+          <br>🍽️ Nearby restaurants & attractions
+          <br>🌤️ Weather advice
+        </div>
+      </div>
+
+      <div class="typing-indicator" id="typingIndicator" style="display:none;">
+        <span></span><span></span><span></span> AI is thinking...
+      </div>
+
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Ask me anything about your trip..." autocomplete="off" />
+        <button onclick="sendMessage()" class="chat-send">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" style="background: var(--bg-card); border-top: 1px solid var(--border); padding: 4rem 2rem 2rem; margin-top: auto;">
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+        <div>
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.5rem;"><i class="fa-solid fa-paper-plane" style="color: var(--accent);"></i> YatraAI</h3>
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">100% verified premium stays across India. Experience seamless travel planning powered by advanced Artificial Intelligence.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="#" style="color: var(--text-secondary); font-size: 1.2rem; transition: color 0.2s;"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: var(--text-secondary); font-size: 1.2rem; transition: color 0.2s;"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: var(--text-secondary); font-size: 1.2rem; transition: color 0.2s;"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div>
+            <h4 style="color: var(--text-primary); margin-bottom: 1.2rem;">Quick Links</h4>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+                <li><a href="/listings" style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;">Explore Hotels</a></li>
+                <li><a href="/about" style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;">About Us</a></li>
+                <li><a href="/contact" style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;">Contact Support</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: var(--text-primary); margin-bottom: 1.2rem;">Legal & Trust</h4>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+                <li><a href="#" style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;">Privacy Policy</a></li>
+                <li><a href="#" style="color: var(--text-secondary); text-decoration: none; transition: color 0.2s;">Terms of Service</a></li>
+                <li style="color: #10ac84; font-weight: 500; margin-top: 0.5rem;"><i class="fa-solid fa-shield-halved"></i> 256-bit Secure Booking</li>
+            </ul>
+        </div>
+    </div>
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center; color: var(--text-secondary); padding-top: 2rem; border-top: 1px solid var(--border); font-size: 0.9rem;">
+        <p>© 2025 YatraAI &nbsp;|&nbsp; Built with Node.js, MongoDB & OpenAI</p>
+    </div>
+  </footer>
+
+  <script src="/js/chat.js"></script>
+</body>
+</html>

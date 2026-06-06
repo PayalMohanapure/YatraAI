@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="form-page">
+  <div class="form-card">
+    <h1><i class="fa-solid fa-pen-to-square"></i> Edit Hotel</h1>
+    <p class="form-subtitle">Update the details for <strong><%= listing.title %></strong></p>
+
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="listing-form" enctype="multipart/form-data">
+
+      <div class="form-group">
+        <label for="title"><i class="fa-solid fa-hotel"></i> Hotel Name</label>
+        <input type="text" id="title" name="listing[title]" value="<%= listing.title %>" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description"><i class="fa-solid fa-align-left"></i> Description</label>
+        <textarea id="description" name="listing[description]" rows="4"><%= listing.description %></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="location"><i class="fa-solid fa-location-dot"></i> City</label>
+          <input type="text" id="location" name="listing[location]" value="<%= listing.location %>" required />
+        </div>
+        <div class="form-group">
+          <label for="country"><i class="fa-solid fa-flag"></i> Country</label>
+          <input type="text" id="country" name="listing[country]" value="<%= listing.country %>" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="imageUrl"><i class="fa-solid fa-image"></i> Upload New Image</label>
+        <input type="file" id="imageUrl" name="listing[image]" accept="image/*" />
+        <small>Leave blank to keep current image</small>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price"><i class="fa-solid fa-indian-rupee-sign"></i> Price per Night (₹)</label>
+          <input type="number" id="price" name="listing[price]" value="<%= listing.price %>" min="0" required />
+        </div>
+        <div class="form-group">
+          <label for="starRating"><i class="fa-solid fa-star"></i> Star Rating</label>
+          <select id="starRating" name="listing[starRating]">
+            <option value="3" <%= listing.starRating === 3 ? 'selected' : '' %>>3 Stars</option>
+            <option value="4" <%= listing.starRating === 4 ? 'selected' : '' %>>4 Stars</option>
+            <option value="5" <%= listing.starRating === 5 ? 'selected' : '' %>>5 Stars</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <a href="/listings/<%= listing._id %>" class="btn-cancel">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
