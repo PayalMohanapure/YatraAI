@@ -30,6 +30,7 @@ Here is a live screenshot of the deployed YatraAI platform:
 YatraAI is not just a standard booking platform; it features a sophisticated **Multi-Agent Orchestration System** powered by OpenAI. This system eliminates hallucinations by injecting real database records into the AI prompts.
 
 ### How it Works (The Agentic Pipeline)
+
 1. **User Input:** The user types a message in the global chat widget.
 2. **Memory Manager:** The system retrieves the user's session history (sliding window) for context.
 3. **RAG Pipeline (Retrieval-Augmented Generation):** The backend queries MongoDB for the currently viewed hotel and other available hotels in the same city.
@@ -67,6 +68,7 @@ graph TD;
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - **Runtime:** Node.js
 - **Framework:** Express.js
 - **Database:** MongoDB (Mongoose ORM)
@@ -74,6 +76,7 @@ graph TD;
 - **File Uploads:** Multer, Cloudinary
 
 ### Frontend
+
 - **Templating:** EJS (Embedded JavaScript), EJS-Mate
 - **Styling:** Custom CSS (CSS Variables, Flexbox, CSS Grid)
 - **Maps:** Leaflet.js
@@ -85,20 +88,25 @@ graph TD;
 Follow these steps to run YatraAI on your local machine.
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/PayalMohanapure/YatraAI.git
 cd YatraAI
 ```
 
 ### 2. Install dependencies
+
 Navigate to the backend directory and install all required NPM packages:
+
 ```bash
 cd BACKEND
 npm install
 ```
 
 ### 3. Configure Environment Variables
+
 Create a `.env` file in the `BACKEND` directory and add your secret keys. **Never commit this file to GitHub.**
+
 ```env
 PORT=8080
 MONGODB_URL=your_mongodb_connection_string
@@ -110,9 +118,11 @@ OPENAI_API_KEY=your_openai_api_key
 ```
 
 ### 4. Run the Server
+
 ```bash
 node app.js
 ```
+
 The application will be running at `http://localhost:8080`.
 
 ---
@@ -155,14 +165,14 @@ YatraAI/
 │   ├── middleware.js   # Auth & Validation middleware
 │   └── package.json
 └── FRONTEND/           # Client-side code & EJS Views
-    ├── public/         
+    ├── public/
     │   ├── css/
     │   │   └── style.css
     │   └── js/
     │       ├── booking.js
     │       ├── chat.js
     │       └── map.js
-    └── views/          
+    └── views/
         ├── layouts/
         │   └── boilerplate.ejs
         ├── listings/
