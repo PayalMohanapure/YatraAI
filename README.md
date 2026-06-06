@@ -21,12 +21,12 @@ Here is a look at the live YatraAI platform:
 
 | 🏠 Homepage & Search | 🗺️ Interactive Maps |
 | :---: | :---: |
-| ![Homepage](docs/homepage.png) | ![Interactive Map](docs/map.png) |
+| ![Homepage](https://raw.githubusercontent.com/PayalMohanapure/YatraAI/main/docs/homepage.png) | ![Interactive Map](https://raw.githubusercontent.com/PayalMohanapure/YatraAI/main/docs/map.png) |
 | *Modern Glassmorphism UI & Advanced Filters* | *Real-time location tracking & routing* |
 
 | 🏨 Hotel Listings | 🤖 AI Travel Concierge |
 | :---: | :---: |
-| ![Listings](docs/listings.png) | ![AI Chatbot](docs/ai-chat.png) |
+| ![Listings](https://raw.githubusercontent.com/PayalMohanapure/YatraAI/main/docs/listings.png) | ![AI Chatbot](https://raw.githubusercontent.com/PayalMohanapure/YatraAI/main/docs/ai-chat.png) |
 | *80+ curated luxury properties* | *Context-aware trip planning & local guide* |
 
 ---
