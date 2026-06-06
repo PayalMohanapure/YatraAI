@@ -121,16 +121,63 @@ The application will be running at `http://localhost:8080`.
 
 ```text
 YatraAI/
-├── AGENTIC_AI/         # Multi-Agent Logic, Orchestrator, & RAG Pipeline
-├── BACKEND/            
-│   ├── controllers/    # Route logic (MVC Pattern)
-│   ├── models/         # MongoDB Schemas (Listings, Users, Reviews)
-│   ├── routes/         # Express routing definitions
-│   ├── app.js          # Main server entry point
+├── AGENTIC_AI/         # Multi-Agent Logic & OpenAI Integration
+│   ├── config.js
+│   ├── localGuideAgent.js
+│   ├── memory.js
+│   ├── orchestrator.js
+│   ├── places.js
+│   ├── rag.js
+│   ├── travelPlannerAgent.js
 │   └── package.json
-└── FRONTEND/
-    ├── public/         # Static assets (CSS, Client-side JS)
-    └── views/          # EJS Templates (Layouts, Pages, Components)
+├── BACKEND/            # Express.js Server & Business Logic
+│   ├── controllers/    # Route controllers (MVC)
+│   │   ├── ai.js
+│   │   ├── listings.js
+│   │   ├── reviews.js
+│   │   └── users.js
+│   ├── init/           # Database seed scripts
+│   │   ├── data.js
+│   │   └── index.js
+│   ├── models/         # Mongoose Schemas
+│   │   ├── listing.js
+│   │   ├── review.js
+│   │   └── user.js
+│   ├── routes/         # Express router endpoints
+│   │   ├── ai.js
+│   │   ├── listings.js
+│   │   ├── reviews.js
+│   │   └── users.js
+│   ├── scripts/
+│   │   └── fetch-osm.js
+│   ├── app.js          # Entry point
+│   ├── cloudConfig.js  # Cloudinary configuration
+│   ├── middleware.js   # Auth & Validation middleware
+│   └── package.json
+└── FRONTEND/           # Client-side code & EJS Views
+    ├── public/         
+    │   ├── css/
+    │   │   └── style.css
+    │   └── js/
+    │       ├── booking.js
+    │       ├── chat.js
+    │       └── map.js
+    └── views/          
+        ├── layouts/
+        │   └── boilerplate.ejs
+        ├── listings/
+        │   ├── edit.ejs
+        │   ├── index.ejs
+        │   ├── new.ejs
+        │   └── show.ejs
+        ├── pages/
+        │   ├── about.ejs
+        │   └── contact.ejs
+        ├── users/
+        │   ├── login.ejs
+        │   ├── profile.ejs
+        │   └── signup.ejs
+        └── error.ejs
 ```
 
 ---
