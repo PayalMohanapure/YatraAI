@@ -9,7 +9,7 @@
 <h1 align="center">YatraAI 🇮🇳✈️</h1>
 
 <p align="center">
-  <strong>Discover India's finest hotels with an embedded AI Travel Concierge.</strong><br>
+  <strong>Discover India's finest hotels with an embedded Multi-Agent AI Travel Concierge.</strong><br>
   <a href="https://yatraai-ihpw.onrender.com">View Live Demo</a>
 </p>
 
@@ -17,18 +17,46 @@
 
 ## 📸 Platform Preview
 
-> **Note to Developer:** *Place your high-resolution screenshots in a `docs/` folder and replace these placeholder paths.*
+Here is a live screenshot of the deployed YatraAI platform:
 
-| Homepage & Search | AI Travel Concierge |
-| :---: | :---: |
-| ![Homepage](docs/homepage-screenshot.png) | ![AI Chatbot](docs/ai-screenshot.png) |
-| *Modern Glassmorphism UI & Advanced Filters* | *Context-aware trip planning & local guide* |
+<div align="center">
+  <img src="https://image.thum.io/get/width/1200/crop/800/https://yatraai-ihpw.onrender.com/listings" alt="YatraAI Homepage Screenshot" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-top: 1rem;" />
+</div>
 
 ---
 
-## ✨ Features
+## 🧠 Agentic AI Workflow
 
-- **🤖 Conversational AI Concierge:** Integrated OpenAI assistant capable of generating day-by-day itineraries, budget estimates, and local restaurant recommendations.
+YatraAI is not just a standard booking platform; it features a sophisticated **Multi-Agent Orchestration System** powered by OpenAI. This system eliminates hallucinations by injecting real database records into the AI prompts.
+
+### How it Works (The Agentic Pipeline)
+1. **User Input:** The user types a message in the global chat widget.
+2. **Memory Manager:** The system retrieves the user's session history (sliding window) for context.
+3. **RAG Pipeline (Retrieval-Augmented Generation):** The backend queries MongoDB for the currently viewed hotel and other available hotels in the same city.
+4. **The Orchestrator:** A lightweight intent classifier analyzes the message and routes it to the appropriate specialist agent:
+   - 🗺️ **Travel Planner Agent:** Handles day-by-day itineraries, budget estimations, and weather advice.
+   - 🍽️ **Local Guide Agent:** Handles highly specific food, sightseeing, and cultural recommendations near the current hotel using exact coordinates.
+5. **Contextual Response:** The chosen agent generates a highly accurate response using the real hotel data, completely preventing AI hallucination.
+
+```mermaid
+graph TD;
+    User-->|Chat Message| Memory[Session Memory]
+    Memory-->RAG[RAG: Fetch MongoDB Data]
+    RAG-->Orchestrator{Intent Orchestrator}
+    Orchestrator-->|Itinerary/Budget| Planner[Travel Planner Agent]
+    Orchestrator-->|Food/Culture| Guide[Local Guide Agent]
+    Orchestrator-->|General Chat| General[General Concierge]
+    Planner-->Response
+    Guide-->Response
+    General-->Response
+    Response-->|Display to User| User
+```
+
+---
+
+## ✨ Core Features
+
+- **🤖 Conversational AI Concierge:** Integrated multi-agent assistant capable of generating accurate, data-backed travel plans.
 - **🗺️ Interactive Maps:** Real-time location tracking and routing using the Leaflet Geolocation API.
 - **🔐 Secure Authentication:** Robust user authentication (Signup/Login) with Passport.js and secure session storage.
 - **☁️ Cloud Image Hosting:** Seamless property image uploads managed via Cloudinary integration.
@@ -49,10 +77,6 @@
 - **Templating:** EJS (Embedded JavaScript), EJS-Mate
 - **Styling:** Custom CSS (CSS Variables, Flexbox, CSS Grid)
 - **Maps:** Leaflet.js
-
-### AI Integration
-- **LLM:** OpenAI API (GPT-4 / GPT-3.5)
-- **Architecture:** RAG (Retrieval-Augmented Generation) passing MongoDB context directly into the AI prompts.
 
 ---
 
@@ -85,13 +109,7 @@ CLOUD_API_SECRET=your_cloudinary_api_secret
 OPENAI_API_KEY=your_openai_api_key
 ```
 
-### 4. Seed the Database (Optional)
-If you want to populate the database with sample hotels:
-```bash
-node init/index.js
-```
-
-### 5. Run the Server
+### 4. Run the Server
 ```bash
 node app.js
 ```
@@ -103,7 +121,7 @@ The application will be running at `http://localhost:8080`.
 
 ```text
 YatraAI/
-├── AGENTIC_AI/         # OpenAI integration, Orchestrator, & RAG logic
+├── AGENTIC_AI/         # Multi-Agent Logic, Orchestrator, & RAG Pipeline
 ├── BACKEND/            
 │   ├── controllers/    # Route logic (MVC Pattern)
 │   ├── models/         # MongoDB Schemas (Listings, Users, Reviews)
