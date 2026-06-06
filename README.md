@@ -17,11 +17,17 @@
 
 ## 📸 Platform Preview
 
-Here is a live screenshot of the deployed YatraAI platform:
+Here is a look at the live YatraAI platform:
 
-<div align="center">
-  <img src="https://image.thum.io/get/width/1200/crop/800/https://yatraai-ihpw.onrender.com/listings" alt="YatraAI Homepage Screenshot" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-top: 1rem;" />
-</div>
+| 🏠 Homepage & Search | 🗺️ Interactive Maps |
+| :---: | :---: |
+| ![Homepage](docs/homepage.png) | ![Interactive Map](docs/map.png) |
+| *Modern Glassmorphism UI & Advanced Filters* | *Real-time location tracking & routing* |
+
+| 🏨 Hotel Listings | 🤖 AI Travel Concierge |
+| :---: | :---: |
+| ![Listings](docs/listings.png) | ![AI Chatbot](docs/ai-chat.png) |
+| *80+ curated luxury properties* | *Context-aware trip planning & local guide* |
 
 ---
 
